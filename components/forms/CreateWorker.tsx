@@ -25,7 +25,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { useOrganization } from '@clerk/nextjs';
 import { WorkerValidation } from '@/lib/validations/worker';
-import { createWorker, getWorker } from '@/lib/actions/worker.actions';
+import { createWorker, getWorker, updateWorker } from '@/lib/actions/worker.actions';
 import { Input } from '@/components/ui/input';
 
 
@@ -38,10 +38,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 interface Props {
     worker: {
+        _id: string;
         firstname: string;
         lastname: string;
-        mondaystart: Dayjs | string |  null;
-        mondayend: Dayjs | string| null;
+        mondaystart: Dayjs |  null;
+        mondayend: Dayjs | null;
     };
     
 }
@@ -52,6 +53,7 @@ function CreateWorker({ worker } : Props) {
     const pathname = usePathname();
 
 
+
    
     //const { organization } = useOrganization();
 
@@ -60,8 +62,8 @@ function CreateWorker({ worker } : Props) {
         defaultValues: {
             firstname: worker?.firstname || "",
             lastname: worker?.lastname || "",
-            mondaystart: worker?.mondaystart || dayjs('2000-01-01T10:00') || null,
-            mondayend: worker?.mondayend || dayjs('2000-01-01T17:00') ||  null,
+            mondaystart: dayjs(worker?.mondaystart) || dayjs('2000-01-01T10:00') || null,
+            mondayend: dayjs(worker?.mondayend) || dayjs('2000-01-01T17:00') ||  null,
             timeoff: "",
         }
     })
@@ -69,19 +71,38 @@ function CreateWorker({ worker } : Props) {
  
 
     const onSubmit = async (values: z.infer<typeof WorkerValidation>) => {
-        
-            await createWorker( { 
+
+            if(!worker?._id) {
+
+           
+                await createWorker( { 
+                    firstname: values.firstname,
+                    lastname: values.lastname,
+                    mondaystart: values.mondaystart,
+                    mondayend:  values.mondayend,
+                    path: pathname,
+                });
+        } else {
+
+
+            await updateWorker( {
+                id: String(worker._id),
                 firstname: values.firstname,
                 lastname: values.lastname,
                 mondaystart: values.mondaystart,
                 mondayend:  values.mondayend,
                 path: pathname,
+
             });
+
+
+
+        }
             //update user
 
         
 
-        router.push("/")
+        router.push("/employees")
 
     }
 
@@ -178,11 +199,12 @@ function CreateWorker({ worker } : Props) {
                         />
                     </LocalizationProvider>
                 </div>
-                
+            
                 <Button type="submit" className="bg-primary-500">
-                    Create Employee
+                    {worker._id ? ("Update Employee") : ("Create Employee")}
                 </Button>
-
+                
+               
             </form>
         </Form>
     )

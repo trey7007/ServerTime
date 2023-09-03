@@ -4,14 +4,16 @@
 import { revalidatePath } from "next/cache";
 import Worker from "../models/worker.model";
 
+import dayjs, { Dayjs } from 'dayjs';
 
 import { connectToDB } from "../mongoose";
 
 interface Params {
+  id?: string,
   firstname: string,
   lastname: string,
-  mondaystart: string | null,
-  mondayend: string | null,
+  mondaystart: Dayjs | null,
+  mondayend:  Dayjs | null,
   path: string,
 }
 
@@ -35,6 +37,26 @@ export async function createWorker({ firstname, lastname, mondaystart, mondayend
     }
   }
 
+
+export async function updateWorker( { id, firstname, lastname, mondaystart, mondayend, path }: Params) {
+  
+  connectToDB();
+
+  try {
+   
+    const worker = await Worker.findByIdAndUpdate(id, {
+      firstname,
+      lastname,
+      mondaystart,
+      mondayend,
+    })
+
+    revalidatePath(path);
+
+  } catch (error: any) {
+    throw new Error('Error updating worker: ' + error.message);
+  }
+  }
 
 export async function getAllWorkers() {
     
