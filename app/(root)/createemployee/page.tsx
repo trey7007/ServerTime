@@ -27,7 +27,7 @@ async function Page({ params }: { params: { id: string } }) {
             <h1 className= "head-text">Create Employee</h1>
             <CreateWorker 
                 worker={workerData}  
-                btnTitle="" />
+            />
 
         </>
 

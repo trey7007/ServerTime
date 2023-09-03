@@ -2,7 +2,7 @@
 
 import { Button } from "../ui/button";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { deleteWorker } from "@/lib/actions/worker.actions";
 
@@ -16,6 +16,7 @@ const WorkerCard = ({ id, firstname, lastname } : Props) => {
     
 
     const router = useRouter();
+    const pathname = usePathname();
     
     return(
         <article className="text-light-1 flex flex-row">
@@ -28,7 +29,7 @@ const WorkerCard = ({ id, firstname, lastname } : Props) => {
                 View
             </Button>
 
-            <Button className="" onClick={() => deleteWorker(id)}>
+            <Button className="" onClick={() => deleteWorker(id, pathname)}>
                 Delete
             </Button>
 

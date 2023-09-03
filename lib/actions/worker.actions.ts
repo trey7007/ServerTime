@@ -65,25 +65,22 @@ export async function getWorker(id: string) {
   }
 }
 
-export async function deleteWorker(id: string) {
-  console.log("Called Delete Worker")
+export async function deleteWorker(id: string, path: string) {
+  
 
   try {
     connectToDB();
 
     // Find the thread to be deleted (the main thread)
-    const worker = await Worker.findById(id);
+    const worker = await Worker.findByIdAndDelete(id);
 
     if (!worker) {
       throw new Error("Worker not found");
     }
-
-    Worker.findByIdAndDelete(id)
-
+   
     // TODO: Delete the worker from the org they are part of
     
-
-    //revalidatePath(path);
+    revalidatePath(path);
 
   } catch (error: any) {
     throw new Error(`Failed to delete worker: ${error.message}`);
