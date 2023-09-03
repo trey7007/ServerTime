@@ -1,0 +1,38 @@
+import CreateWorker from '@/components/forms/CreateWorker';
+import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
+import { Dayjs } from "dayjs";
+import { getWorker } from '@/lib/actions/worker.actions';
+
+
+
+async function Page({ params }: { params: { id: string } }) {
+
+    const user = await currentUser();
+
+    if(!user) return null;
+
+
+    const workerData = {
+        firstname: "",
+        lastname: "",
+        mondaystart: null,
+        mondayend: null,
+
+    }
+
+
+    return (
+        <>
+            <h1 className= "head-text">Create Employee</h1>
+            <CreateWorker 
+                worker={workerData}  
+                btnTitle="" />
+
+        </>
+
+    )
+
+}
+
+export default Page;

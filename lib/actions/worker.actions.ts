@@ -4,7 +4,7 @@
 import { revalidatePath } from "next/cache";
 import Worker from "../models/worker.model";
 
-import Counter from "../models/counter.model"
+
 import { connectToDB } from "../mongoose";
 
 interface Params {
@@ -20,25 +20,18 @@ export async function createWorker({ firstname, lastname, mondaystart, mondayend
     try {
       connectToDB();
 
-      let count =  await Counter.findOne({db: "workers"})
-
-      var id = Number(count.seq_value)
-      id = id + 1
 
       const createdWorker = await Worker.create({
-        id,
         firstname,
         lastname,
         mondaystart,
         mondayend,
       });
 
-      await Counter.findOneAndUpdate({"db" : "workers"}, { $inc: {"seq_value" : 1}})
-
       revalidatePath(path);
 
     } catch (error: any) {
-      throw new Error(`Failed to create Employee: ${error.message}`);
+      throw new Error(`Failed to create Employee in createWorker: ${error.message}`);
     }
   }
 
@@ -48,7 +41,8 @@ export async function getAllWorkers() {
     connectToDB();
 
     try {
-      const workers = await Worker.find({});
+      const workers = await Worker.find({}).lean();
+
       return workers;
 
     } catch (error: any) {
@@ -61,11 +55,9 @@ export async function getWorker(id: string) {
   connectToDB();
 
   try {
-    const worker = await Worker.findOne({ id });
-    console.log("this is in worker actions")
-    console.log(worker)
-    console.log("\n")
-
+   
+    const worker = await Worker.findById( id );
+    
     return worker;
 
   } catch (error: any) {
@@ -73,6 +65,30 @@ export async function getWorker(id: string) {
   }
 }
 
+export async function deleteWorker(id: string) {
+  console.log("Called Delete Worker")
+
+  try {
+    connectToDB();
+
+    // Find the thread to be deleted (the main thread)
+    const worker = await Worker.findById(id);
+
+    if (!worker) {
+      throw new Error("Worker not found");
+    }
+
+    Worker.findByIdAndDelete(id)
+
+    // TODO: Delete the worker from the org they are part of
+    
+
+    //revalidatePath(path);
+
+  } catch (error: any) {
+    throw new Error(`Failed to delete worker: ${error.message}`);
+  }
+}
 
   
 

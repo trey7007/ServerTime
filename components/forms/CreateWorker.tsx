@@ -2,7 +2,7 @@
 
 //General Form Imports Start
 import * as z from 'zod'; // Zod for validation
-import { Controller, useForm } from "react-hook-form"; //Form
+import { useForm } from "react-hook-form"; //Form
 import { Button } from "@/components/ui/button" // Button to submit the form
 import {
     Form,
@@ -21,42 +21,35 @@ import { zodResolver } from '@hookform/resolvers/zod'; // Zod for validation
 
 
 import { usePathname, useRouter } from "next/navigation";
-import { formatDateString } from "@/lib/utils";
+
 
 import { useOrganization } from '@clerk/nextjs';
 import { WorkerValidation } from '@/lib/validations/worker';
-import { createWorker } from '@/lib/actions/worker.actions';
+import { createWorker, getWorker } from '@/lib/actions/worker.actions';
 import { Input } from '@/components/ui/input';
 
 
-import TimePickerInput from '../ui/timepicker';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useEffect, useState } from 'react';
+
 
 
 
 interface Props {
     worker: {
-        id: string;
         firstname: string;
         lastname: string;
         mondaystart: Dayjs | string |  null;
         mondayend: Dayjs | string| null;
     };
-
-    btnTitle: string;
+    
 }
 
-function CreateWorker({ worker, btnTitle } : Props) {
-
-   
-    
+function CreateWorker({ worker } : Props) {
 
     const router = useRouter();
     const pathname = usePathname();
-    //const curdate = dayjs('2000-01-01T15:30');
 
 
    
@@ -67,15 +60,16 @@ function CreateWorker({ worker, btnTitle } : Props) {
         defaultValues: {
             firstname: worker?.firstname || "",
             lastname: worker?.lastname || "",
-            mondaystart: worker?.mondaystart || null,
-            mondayend: worker?.mondayend || null,
+            mondaystart: worker?.mondaystart || dayjs('2000-01-01T10:00') || null,
+            mondayend: worker?.mondayend || dayjs('2000-01-01T17:00') ||  null,
             timeoff: "",
         }
     })
 
+ 
+
     const onSubmit = async (values: z.infer<typeof WorkerValidation>) => {
-      
-        if(worker.id === null) {
+        
             await createWorker( { 
                 firstname: values.firstname,
                 lastname: values.lastname,
@@ -83,10 +77,9 @@ function CreateWorker({ worker, btnTitle } : Props) {
                 mondayend:  values.mondayend,
                 path: pathname,
             });
-        } else {
             //update user
 
-        }
+        
 
         router.push("/")
 
@@ -185,11 +178,11 @@ function CreateWorker({ worker, btnTitle } : Props) {
                         />
                     </LocalizationProvider>
                 </div>
-
+                
                 <Button type="submit" className="bg-primary-500">
                     Create Employee
                 </Button>
-                
+
             </form>
         </Form>
     )

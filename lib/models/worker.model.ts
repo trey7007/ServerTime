@@ -3,7 +3,7 @@ import { Dayjs } from "dayjs";
 
 const workerSchema = new mongoose.Schema({
 
-    id: { type: String, required: true},
+    
 
     firstname: { type: String, required: true},
 

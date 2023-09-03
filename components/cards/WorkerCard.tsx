@@ -4,16 +4,17 @@ import { Button } from "../ui/button";
 
 import { useRouter } from "next/navigation";
 
+import { deleteWorker } from "@/lib/actions/worker.actions";
+
 interface Props{
     id: string;
     firstname: string;
     lastname: string;
+ }
 
-}
+const WorkerCard = ({ id, firstname, lastname } : Props) => {
+    
 
-const WorkerCard = ({ id, firstname, lastname} : Props) => {
-    
-    
     const router = useRouter();
     
     return(
@@ -25,6 +26,10 @@ const WorkerCard = ({ id, firstname, lastname} : Props) => {
 
             <Button className="" onClick={() => router.push(`/employees/${id}`)}>
                 View
+            </Button>
+
+            <Button className="" onClick={() => deleteWorker(id)}>
+                Delete
             </Button>
 
         </article>
