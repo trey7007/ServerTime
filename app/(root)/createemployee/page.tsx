@@ -1,7 +1,7 @@
 import CreateWorker from '@/components/forms/CreateWorker';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { getWorker } from '@/lib/actions/worker.actions';
 
 
@@ -16,9 +16,6 @@ async function Page({ params }: { params: { id: string } }) {
     const workerData = {
         firstname: "",
         lastname: "",
-        mondaystart: null,
-        mondayend: null,
-
     }
 
 

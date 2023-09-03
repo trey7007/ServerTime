@@ -38,11 +38,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 interface Props {
     worker: {
-        _id: string;
+        _id?: string;
         firstname: string;
         lastname: string;
-        mondaystart: Dayjs |  null;
-        mondayend: Dayjs | null;
+        mondaystart?: Dayjs |  null;
+        mondayend?: Dayjs | null;
     };
     
 }
@@ -62,8 +62,8 @@ function CreateWorker({ worker } : Props) {
         defaultValues: {
             firstname: worker?.firstname || "",
             lastname: worker?.lastname || "",
-            mondaystart: dayjs(worker?.mondaystart) || dayjs('2000-01-01T10:00') || null,
-            mondayend: dayjs(worker?.mondayend) || dayjs('2000-01-01T17:00') ||  null,
+            mondaystart: worker && worker.mondaystart ? dayjs(worker?.mondaystart) : dayjs('2000-01-01T16:00'),
+            mondayend: worker && worker.mondayend ? dayjs(worker?.mondayend) : dayjs('2000-01-01T22:00'),
             timeoff: "",
         }
     })
