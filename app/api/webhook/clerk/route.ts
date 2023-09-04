@@ -70,7 +70,7 @@ export async function POST(req: Request) {
 
       await createOrg(
         // @ts-ignore
-        id,
+        clerkId = id,
         name,
         slug,
         "org bio",

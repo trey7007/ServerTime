@@ -17,6 +17,8 @@ export async function createOrg(
   try {
     connectToDB();
 
+    // user_2UX7hg8GH9nfVGpoKrHEltBPnqD
+    // user_2UX7hg8GH9nfVGpoKrHEltBPnqD
     // Find the user that created this Org
     const user = await User.findOne({ clerkId: createdById });
 
