@@ -5,9 +5,6 @@ import { ClerkProvider } from '@clerk/nextjs'
 import Topbar from '@/components/shared/Topbar'
 import Leftsidebar from '@/components/shared/Leftsidebar'
 import Bottombar from '@/components/shared/Bottombar'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -23,9 +20,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <head>
+        {/* <head>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        </head>
+        </head> */}
         <body className={inter.className}>
           <Topbar />
 

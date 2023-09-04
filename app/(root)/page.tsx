@@ -1,6 +1,5 @@
 
 import { getUser } from "@/lib/actions/user.actions";
-
 import { currentUser } from '@clerk/nextjs'
 import { redirect } from "next/navigation";
 
@@ -13,8 +12,8 @@ export default async function Home() {
   // if (!userInfo?.onboarded) redirect("/onboarding");
 
   return (
-    <>
+    
       <h1 className="head-text text-left">Home</h1>
-    </>
+    
   )
 }
