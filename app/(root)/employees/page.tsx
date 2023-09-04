@@ -10,10 +10,7 @@ async function Page() {
     return(
       <>
         <div className="flex flex-col space-y-6 ">
-        {result.map((worker) => (
-
-          
-          
+        {result.map((worker) => (          
           <WorkerCard
             key={String(worker._id)}
             id = {String(worker._id)}

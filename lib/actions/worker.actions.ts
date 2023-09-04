@@ -63,7 +63,7 @@ export async function getAllWorkers() {
     connectToDB();
 
     try {
-      const workers = await Worker.find({}).lean();
+      const workers = await Worker.find().lean();
 
       return workers;
 
