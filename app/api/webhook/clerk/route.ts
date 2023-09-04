@@ -4,12 +4,12 @@
 
 // Resource: https://docs.svix.com/receiving/verifying-payloads/why
 // It's a good practice to verify webhooks. Above article shows why we should do it
+
 import { Webhook, WebhookRequiredHeaders } from "svix";
 import { headers } from "next/headers";
-
 import { IncomingHttpHeaders } from "http";
-
 import { NextResponse } from "next/server";
+import { createOrg } from "@/lib/actions/org.actions";
 
 
 // Resource: https://clerk.com/docs/integration/webhooks#supported-events
@@ -48,8 +48,10 @@ export async function POST(req: Request) {
 
   try {
     evt = wh.verify(
+
       JSON.stringify(payload),
       heads as IncomingHttpHeaders & WebhookRequiredHeaders
+
     ) as Event;
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 400 });
@@ -57,9 +59,6 @@ export async function POST(req: Request) {
 
   const eventType: EventType = evt?.type!;
 
-
-
-  
   // Listen organization creation event
   if (eventType === "organization.created") {
     // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/CreateOrganization
@@ -68,9 +67,15 @@ export async function POST(req: Request) {
       evt?.data ?? {};
 
     try {
-      
-      
-      
+
+      await createOrg(
+        // @ts-ignore
+        id,
+        name,
+        slug,
+        "org bio",
+        created_by
+      );
 
       return NextResponse.json({ message: "User created" }, { status: 201 });
 
@@ -84,7 +89,60 @@ export async function POST(req: Request) {
     }
   }
 
-  // Listen organization invitation creation event.
+
+
+  // TO DO:
+  // TO DO:
+  // TO DO:
+  // TO DO:
+  // TO DO:
+
+
+
+  if (eventType === "organization.updated") {
+    try {
+      // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/UpdateOrganization
+      // Show what evt?.data sends from above resource
+      const { id, logo_url, name, slug } = evt?.data;
+      console.log("updated", evt?.data);
+
+     
+
+      return NextResponse.json({ message: "Member removed" }, { status: 201 });
+    } catch (err) {
+      console.log(err);
+
+      return NextResponse.json(
+        { message: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
+  }
+
+
+  if (eventType === "organization.deleted") {
+    try {
+      // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/DeleteOrganization
+      // Show what evt?.data sends from above resource
+      const { id } = evt?.data;
+      console.log("deleted", evt?.data);
+
+      
+      return NextResponse.json(
+        { message: "Organization deleted" },
+        { status: 201 }
+      );
+    } catch (err) {
+      console.log(err);
+
+      return NextResponse.json(
+        { message: "Internal Server Error" },
+        { status: 500 }
+      );
+    }
+  }
+
+
   // Just to show. You can avoid this or tell people that we can create a new mongoose action and
   // add pending invites in the database.
   if (eventType === "organizationInvitation.created") {
@@ -132,7 +190,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // Listen member deletion event
+
   if (eventType === "organizationMembership.deleted") {
     try {
       // Resource: https://clerk.com/docs/reference/backend-api/tag/Organization-Memberships#operation/DeleteOrganizationMembership
@@ -152,47 +210,5 @@ export async function POST(req: Request) {
     }
   }
 
-  // Listen organization updation event
-  if (eventType === "organization.updated") {
-    try {
-      // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/UpdateOrganization
-      // Show what evt?.data sends from above resource
-      const { id, logo_url, name, slug } = evt?.data;
-      console.log("updated", evt?.data);
-
-     
-
-      return NextResponse.json({ message: "Member removed" }, { status: 201 });
-    } catch (err) {
-      console.log(err);
-
-      return NextResponse.json(
-        { message: "Internal Server Error" },
-        { status: 500 }
-      );
-    }
-  }
-
-  // Listen organization deletion event
-  if (eventType === "organization.deleted") {
-    try {
-      // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/DeleteOrganization
-      // Show what evt?.data sends from above resource
-      const { id } = evt?.data;
-      console.log("deleted", evt?.data);
-
-      
-      return NextResponse.json(
-        { message: "Organization deleted" },
-        { status: 201 }
-      );
-    } catch (err) {
-      console.log(err);
-
-      return NextResponse.json(
-        { message: "Internal Server Error" },
-        { status: 500 }
-      );
-    }
-  }
+  
 };
