@@ -20,9 +20,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        {/* <head>
+        <head>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        </head> */}
+        </head>
         <body className={inter.className}>
           <Topbar />
 
