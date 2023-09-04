@@ -60,9 +60,11 @@ export async function updateWorker( { id, firstname, lastname, mondaystart, mond
 
 export async function getAllWorkers() {
     
-    connectToDB();
+    
 
     try {
+      
+      connectToDB();
       const workers = await Worker.find().lean();
 
       return workers;
