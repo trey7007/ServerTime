@@ -1,9 +1,6 @@
 import mongoose from 'mongoose';
-import { Dayjs } from "dayjs";
 
 const workerSchema = new mongoose.Schema({
-
-    
 
     firstname: { type: String, required: true},
 
