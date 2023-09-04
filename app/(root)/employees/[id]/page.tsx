@@ -18,14 +18,14 @@ async function Page( { params } : {params: {id: string}} ) {
     }
 
     return (
-        <>
-            <h1 className= "head-text">Create Employee</h1>
-            <CreateWorker 
-                key = {params.id}
-                worker={workerData}
-            />
+            <div>
+                <h1 className= "head-text">Create Employee</h1>
+                <CreateWorker 
+                    key = {params.id}
+                    worker={workerData}
+                />
+            </div>
 
-        </>
 
     )
 
