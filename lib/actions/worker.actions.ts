@@ -23,7 +23,6 @@ export async function createWorker({ orgId, firstname, lastname, mondaystart, mo
     try {
       connectToDB();
 
-
       const createdWorker = await Worker.create({
         orgId,
         firstname,

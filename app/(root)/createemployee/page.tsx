@@ -12,22 +12,15 @@ import { getUser } from '@/lib/actions/user.actions';
 async function Page() {
 
     //const router = useRouter();
-
     const user = await currentUser();
     if(!user) return null;
-
     const userInfo = await getUser(user.id);
-
-    console.log(userInfo);
 
     const workerData = {
         orgId: userInfo.orgId,
         firstname: "",
         lastname: "",
     };
-
-    console.log(workerData);
-
 
     return (
         <>

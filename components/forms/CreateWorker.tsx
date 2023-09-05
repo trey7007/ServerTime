@@ -39,7 +39,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 interface Props {
     worker: {
         _id?: string;
-        orgId?: string
+        orgId: string
         firstname: string;
         lastname: string;
         mondaystart?: Dayjs |  null;
@@ -49,13 +49,12 @@ interface Props {
 }
 
 function CreateWorker({ worker } : Props) {
+    
+    console.log(worker)
 
     const router = useRouter();
     const pathname = usePathname();
     
-   
- 
-
     const form = useForm({
         resolver: zodResolver(WorkerValidation),
         defaultValues: {
@@ -74,7 +73,7 @@ function CreateWorker({ worker } : Props) {
 
             if(!worker?._id) {
                 await createWorker( {
-                    orgId: values.orgId, 
+                    orgId: worker.orgId, 
                     firstname: values.firstname,
                     lastname: values.lastname,
                     mondaystart: values.mondaystart,
