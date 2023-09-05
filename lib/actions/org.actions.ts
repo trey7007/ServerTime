@@ -36,7 +36,7 @@ export async function createOrg(
     const createdOrg = await newOrg.save();
 
     // Update User model
-    user.org = createdOrg._id;
+    user.orgId = createdOrg._id;
 
     await user.save();
 
@@ -47,4 +47,16 @@ export async function createOrg(
     console.error("Error creating community:", error);
     throw error;
   }
+}
+
+export async function findOrg(clerkId: string) {
+  try {
+
+    connectToDB();
+
+    const orgDetails = await Org.findOne({ clerkId })
+
+  } catch (error: any) {
+      throw new Error(`Failed to find Org: ${error.message}`);
+    }
 }
