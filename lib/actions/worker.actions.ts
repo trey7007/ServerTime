@@ -4,7 +4,7 @@
 import { revalidatePath } from "next/cache";
 import Worker from "../models/worker.model";
 
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 import { connectToDB } from "../mongoose";
 

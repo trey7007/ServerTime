@@ -3,8 +3,6 @@
 import { revalidatePath } from "next/cache";
 import User from "../models/user.models";
 import { connectToDB } from "../mongoose";
-import Org from "../models/organization.model";
-
 
 interface Params {
     clerkId: string;

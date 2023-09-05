@@ -13,28 +13,18 @@ import {
     FormLabel,
     FormMessage,
   } from "@/components/ui/form";
-
-
 import { Textarea } from "@/components/ui/textarea"; //Text for the form
 import { zodResolver } from '@hookform/resolvers/zod'; // Zod for validation
 //General Form Imports End
 
 
 import { usePathname, useRouter } from "next/navigation";
-
-
-import { useOrganization } from '@clerk/nextjs';
 import { WorkerValidation } from '@/lib/validations/worker';
-import { createWorker, getWorker, updateWorker } from '@/lib/actions/worker.actions';
+import { createWorker, updateWorker } from '@/lib/actions/worker.actions';
 import { Input } from '@/components/ui/input';
-
-
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
-
-
 
 interface Props {
     worker: {
@@ -49,8 +39,6 @@ interface Props {
 }
 
 function CreateWorker({ worker } : Props) {
-    
-    console.log(worker)
 
     const router = useRouter();
     const pathname = usePathname();
