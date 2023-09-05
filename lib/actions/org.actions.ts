@@ -1,10 +1,7 @@
 "use server";
 
-import { FilterQuery, SortOrder } from "mongoose";
-
 import Org from "@/lib/models/organization.model";
 import User from "@/lib/models/user.models";
-
 import { connectToDB } from "../mongoose";
 
 export async function createOrg(

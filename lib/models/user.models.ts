@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true},
     bio: String,
     onboarded: { type: Boolean, default: false},
-    org:{ type:mongoose.Schema.Types.ObjectId, ref: 'Org'}
+    orgId:{ type: String, required: true }
 
 });
 

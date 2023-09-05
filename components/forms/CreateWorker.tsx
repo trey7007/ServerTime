@@ -39,6 +39,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 interface Props {
     worker: {
         _id?: string;
+        orgId?: string
         firstname: string;
         lastname: string;
         mondaystart?: Dayjs |  null;
@@ -51,15 +52,14 @@ function CreateWorker({ worker } : Props) {
 
     const router = useRouter();
     const pathname = usePathname();
-
-
-
+    
    
-    //const { organization } = useOrganization();
+ 
 
     const form = useForm({
         resolver: zodResolver(WorkerValidation),
         defaultValues: {
+            orgId: worker?.orgId || "used Default",
             firstname: worker?.firstname || "",
             lastname: worker?.lastname || "",
             mondaystart: worker && worker.mondaystart ? dayjs(worker?.mondaystart) : dayjs('2000-01-01T16:00'),
@@ -73,9 +73,8 @@ function CreateWorker({ worker } : Props) {
     const onSubmit = async (values: z.infer<typeof WorkerValidation>) => {
 
             if(!worker?._id) {
-
-           
-                await createWorker( { 
+                await createWorker( {
+                    orgId: values.orgId, 
                     firstname: values.firstname,
                     lastname: values.lastname,
                     mondaystart: values.mondaystart,
@@ -87,6 +86,7 @@ function CreateWorker({ worker } : Props) {
 
             await updateWorker( {
                 id: String(worker._id),
+                orgId: values.orgId,
                 firstname: values.firstname,
                 lastname: values.lastname,
                 mondaystart: values.mondaystart,

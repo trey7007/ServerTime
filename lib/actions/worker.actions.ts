@@ -10,6 +10,7 @@ import { connectToDB } from "../mongoose";
 
 interface Params {
   id?: string,
+  orgId: string,
   firstname: string,
   lastname: string,
   mondaystart: Dayjs | null,
@@ -17,13 +18,14 @@ interface Params {
   path: string,
 }
 
-export async function createWorker({ firstname, lastname, mondaystart, mondayend, path }: Params
+export async function createWorker({ orgId, firstname, lastname, mondaystart, mondayend, path }: Params
   ) {
     try {
       connectToDB();
 
 
       const createdWorker = await Worker.create({
+        orgId,
         firstname,
         lastname,
         mondaystart,

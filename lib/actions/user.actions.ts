@@ -1,9 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-
 import User from "../models/user.models";
-
 import { connectToDB } from "../mongoose";
 import Org from "../models/organization.model";
 
@@ -50,10 +48,7 @@ export async function getUser(clerkId: string) {
   try {
     connectToDB();
 
-    return await User.findOne({ clerkId }).populate({
-      path: "org",
-      model: Org,
-    });
+    return await User.findOne({ clerkId });
 
   } catch (error: any) {
 

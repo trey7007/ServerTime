@@ -11,6 +11,7 @@ async function Page( { params } : {params: {id: string}} ) {
 
     const workerData = {
         _id: String(curWorker?._id),
+        orgId: String(curWorker?.orgId),
         firstname: curWorker?.firstname,
         lastname: curWorker?.lastname,
         mondaystart: curWorker?.mondaystart,

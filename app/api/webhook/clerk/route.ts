@@ -63,7 +63,7 @@ export async function POST(req: Request) {
   if (eventType === "organization.created") {
     // Resource: https://clerk.com/docs/reference/backend-api/tag/Organizations#operation/CreateOrganization
     // Show what evt?.data sends from above resource
-    const { id, name, slug, logo_url, image_url, created_by } =
+    const { id, name, slug, created_by } =
       evt?.data ?? {};
 
     try {
