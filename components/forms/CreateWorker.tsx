@@ -64,8 +64,8 @@ function CreateWorker({ worker } : Props) {
                     orgId: worker.orgId, 
                     firstname: values.firstname,
                     lastname: values.lastname,
-                    mondaystart: values.mondaystart,
-                    mondayend:  values.mondayend,
+                    mondaystart: values.mondaystart.toDate(),
+                    mondayend:  values.mondayend.toDate(),
                     path: pathname,
                 });
         } else {
@@ -76,8 +76,8 @@ function CreateWorker({ worker } : Props) {
                 orgId: values.orgId,
                 firstname: values.firstname,
                 lastname: values.lastname,
-                mondaystart: values.mondaystart,
-                mondayend:  values.mondayend,
+                mondaystart: values.mondaystart.toDate(),
+                mondayend:  values.mondayend.toDate(),
                 path: pathname,
 
             });

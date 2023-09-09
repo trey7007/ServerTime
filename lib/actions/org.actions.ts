@@ -1,6 +1,6 @@
 "use server";
 import Org from "@/lib/models/organization.model";
-import User from "@/lib/models/user.models";
+import User from "@/lib/models/user.model";
 import { connectToDB } from "../mongoose";
 
 export async function createOrg(

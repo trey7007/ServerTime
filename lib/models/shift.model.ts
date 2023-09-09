@@ -2,15 +2,9 @@ import mongoose from 'mongoose';
 
 const ShiftSchema = new mongoose.Schema({
 
-    orgId: { type: String, required: true},
+    workerId: { type: String, required: true},
 
-    date: {type: Date, required: true},
-
-    shifts: [
-        {
-        type: String
-        }
-    ],
+    shiftime: {type: String, required: true}, 
 
 });
 
