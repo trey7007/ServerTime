@@ -1,8 +1,5 @@
 import CreateWorker from '@/components/forms/CreateWorker';
 import { getWorker } from '@/lib/actions/worker.actions';
-import dayjs, { Dayjs } from 'dayjs';
-
-
 
 
 async function Page( { params } : {params: {id: string}} ) {
@@ -14,9 +11,8 @@ async function Page( { params } : {params: {id: string}} ) {
         orgId: String(curWorker?.orgId),
         firstname: curWorker?.firstname,
         lastname: curWorker?.lastname,
-        mondaystart: curWorker?.mondaystart,
-        mondayend: curWorker?.mondayend,
-        monday: curWorker?.monday
+        monday: curWorker?.monday,
+        tuesday: curWorker?.tuesday
     }
 
     return (

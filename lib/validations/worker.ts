@@ -7,5 +7,7 @@ export const WorkerValidation = z.object({
     lastname: z.string().min(1).max(30),
     mondaystart: z.any(),
     mondayend: z.any(),
+    tuesdaystart: z.any(),
+    tuesdayend: z.any(),
 
 })

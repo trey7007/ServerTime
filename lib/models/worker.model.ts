@@ -8,11 +8,11 @@ const workerSchema = new mongoose.Schema({
 
     lastname: { type: String, required: true},
 
-    mondaystart: { type: String, default: null },
-
-    mondayend: { type: String, default: null},
-
     monday: [
+        {type: String}
+    ],
+    
+    tuesday: [
         {type: String}
     ]
 });

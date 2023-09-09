@@ -33,9 +33,8 @@ interface Props {
         orgId: string
         firstname: string;
         lastname: string;
-        mondaystart?: string |  null;
-        mondayend?: string | null;
         monday?: string[];
+        tuesday?: string[];
     };
     
 }
@@ -53,6 +52,8 @@ function CreateWorker({ worker } : Props) {
             lastname: worker?.lastname || "",
             mondaystart: worker && worker.monday ? TimeToDayjs(worker?.monday[0]) : dayjs('2000-01-01T16:00'),
             mondayend: worker && worker.monday ? TimeToDayjs(worker?.monday[1]) : dayjs('2000-01-01T22:00'),
+            tuesdaystart: worker && worker.tuesday ? TimeToDayjs(worker?.tuesday[0]) : dayjs('2000-01-01T16:00'),
+            tuesdayend: worker && worker.tuesday ? TimeToDayjs(worker?.tuesday[1]) : dayjs('2000-01-01T22:00'),
             timeoff: "",
         }
     })
@@ -61,18 +62,14 @@ function CreateWorker({ worker } : Props) {
 
     const onSubmit = async (values: z.infer<typeof WorkerValidation>) => {
 
-        const mons = dayjsToString(values.mondaystart);
-        const mone =  dayjsToString(values.mondayend);
-        const mond = [mons, mone]
 
         if(!worker?._id) {
                 await createWorker( {
                     orgId: worker.orgId, 
                     firstname: values.firstname,
                     lastname: values.lastname,
-                    mondaystart: dayjsToString(values.mondaystart),
-                    mondayend:  dayjsToString(values.mondayend),
                     monday: [dayjsToString(values.mondaystart) , dayjsToString(values.mondayend)],
+                    tuesday: [dayjsToString(values.tuesdaystart) , dayjsToString(values.tuesdayend)],
                     path: pathname,
                 });
         } else {
@@ -83,9 +80,8 @@ function CreateWorker({ worker } : Props) {
                 orgId: values.orgId,
                 firstname: values.firstname,
                 lastname: values.lastname,
-                mondaystart: dayjsToString(values.mondaystart),
-                mondayend:  dayjsToString(values.mondayend),
                 monday: [dayjsToString(values.mondaystart) , dayjsToString(values.mondayend)],
+                tuesday: [dayjsToString(values.tuesdaystart) , dayjsToString(values.tuesdayend)],
                 path: pathname,
 
             });
@@ -148,8 +144,9 @@ function CreateWorker({ worker } : Props) {
                     )}
                 />
 
-                <div className="flex flex-row gap-2">
-                    <LocalizationProvider  dateAdapter={AdapterDayjs}>
+                <LocalizationProvider  dateAdapter={AdapterDayjs}>
+
+                    <div className="flex flex-row gap-2">
                         <FormField
                             control={form.control}
                             name="mondaystart"
@@ -192,8 +189,53 @@ function CreateWorker({ worker } : Props) {
                             </FormItem>
                             )}
                         />
-                    </LocalizationProvider>
-                </div>
+                    </div>
+
+                    <div className="flex flex-row gap-2">
+                        <FormField
+                            control={form.control}
+                            name="tuesdaystart"
+                            render={({ field }) => (
+                            <FormItem className="flex gap-3 w-3/6 flex-col" >
+                                <FormLabel className="text-base-semibold text-light-2 flex flex-row justify-center">
+                                Tuesday Start
+                                </FormLabel>
+                                <TimePicker
+                                    sx={{fontSize: '16px', margin: '10px', backgroundColor: 'white' }}
+                                    slotProps={{
+                                        textField: {
+                                            size: "small",
+                                            error: false,
+                                        },
+                                    }}
+                                    {...field}
+                                />
+                            </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="tuesdayend"
+                            render={({ field }) => (
+                            <FormItem className="flex gap-3 w-3/6 flex-col" >
+                                <FormLabel className="text-base-semibold text-light-2 flex flex-row justify-center">
+                                Tuesday End
+                                </FormLabel>
+                                <TimePicker
+                                    sx={{fontSize: '16px', margin: '10px', backgroundColor: 'white' }}
+                                    slotProps={{
+                                        textField: {
+                                            size: "small",
+                                            error: false,
+                                        },
+                                    }}
+                                    {...field}
+                                />
+                            </FormItem>
+                            )}
+                        />
+                    </div>
+                </LocalizationProvider>
             
                 <Button type="submit" className="bg-primary-500">
                     {worker._id ? ("Update Employee") : ("Create Employee")}

@@ -13,13 +13,12 @@ interface Params {
   orgId: string,
   firstname: string,
   lastname: string,
-  mondaystart: String | null,
-  mondayend:  String| null,
-  monday: string[]
+  monday?: string[],
+  tuesday?: string[],
   path: string,
 }
 
-export async function createWorker({ orgId, firstname, lastname, mondaystart, mondayend, monday, path }: Params
+export async function createWorker({ orgId, firstname, lastname,  monday, tuesday, path }: Params
   ) {
     try {
       connectToDB();
@@ -28,9 +27,8 @@ export async function createWorker({ orgId, firstname, lastname, mondaystart, mo
         orgId,
         firstname,
         lastname,
-        mondaystart,
-        mondayend,
-        monday
+        monday,
+        tuesday
       });
 
       revalidatePath(path);
@@ -41,7 +39,7 @@ export async function createWorker({ orgId, firstname, lastname, mondaystart, mo
   }
 
 
-export async function updateWorker( { id, firstname, lastname, mondaystart, mondayend, monday, path }: Params) {
+export async function updateWorker( { id, firstname, lastname, monday, tuesday, path }: Params) {
   
   connectToDB();
 
@@ -50,9 +48,8 @@ export async function updateWorker( { id, firstname, lastname, mondaystart, mond
     const worker = await Worker.findByIdAndUpdate(id, {
       firstname,
       lastname,
-      mondaystart,
-      mondayend,
-      monday
+      monday,
+      tuesday
     })
 
     revalidatePath(path);
