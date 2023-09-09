@@ -2,7 +2,7 @@ export const leftbarlinks = [
     {
       imgURL: "/assets/default.svg",
       route: "/",
-      label: "Scheduling",
+      label: "Home",
     },
     {
       imgURL: "/assets/default.svg",
@@ -13,5 +13,10 @@ export const leftbarlinks = [
       imgURL: "/assets/default.svg",
       route: "/staffing",
       label: "Staffing",
+    },
+    {
+      imgURL: "/assets/default.svg",
+      route: "/scheduling",
+      label: "Scheduling",
     },
 ];

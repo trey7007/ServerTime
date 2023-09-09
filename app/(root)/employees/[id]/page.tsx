@@ -16,6 +16,7 @@ async function Page( { params } : {params: {id: string}} ) {
         lastname: curWorker?.lastname,
         mondaystart: curWorker?.mondaystart,
         mondayend: curWorker?.mondayend,
+        monday: curWorker?.monday
     }
 
     return (

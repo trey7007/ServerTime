@@ -1,6 +1,4 @@
-import WorkerCard from '@/components/cards/WorkerCard';
 import { currentUser } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
 
 async function Page() {
 
@@ -12,9 +10,7 @@ async function Page() {
         <>     
         <h1 className= "head-text">Staffing</h1>
         </>
-
     )
-
 }
 
 export default Page;

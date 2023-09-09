@@ -25,6 +25,7 @@ import { Input } from '@/components/ui/input';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TimeToDayjs, dayjsToString } from '@/lib/utils';
 
 interface Props {
     worker: {
@@ -32,8 +33,9 @@ interface Props {
         orgId: string
         firstname: string;
         lastname: string;
-        mondaystart?: Dayjs |  null;
-        mondayend?: Dayjs | null;
+        mondaystart?: string |  null;
+        mondayend?: string | null;
+        monday?: string[];
     };
     
 }
@@ -49,8 +51,8 @@ function CreateWorker({ worker } : Props) {
             orgId: worker?.orgId || "used Default",
             firstname: worker?.firstname || "",
             lastname: worker?.lastname || "",
-            mondaystart: worker && worker.mondaystart ? dayjs(worker?.mondaystart) : dayjs('2000-01-01T16:00'),
-            mondayend: worker && worker.mondayend ? dayjs(worker?.mondayend) : dayjs('2000-01-01T22:00'),
+            mondaystart: worker && worker.monday ? TimeToDayjs(worker?.monday[0]) : dayjs('2000-01-01T16:00'),
+            mondayend: worker && worker.monday ? TimeToDayjs(worker?.monday[1]) : dayjs('2000-01-01T22:00'),
             timeoff: "",
         }
     })
@@ -59,13 +61,18 @@ function CreateWorker({ worker } : Props) {
 
     const onSubmit = async (values: z.infer<typeof WorkerValidation>) => {
 
-            if(!worker?._id) {
+        const mons = dayjsToString(values.mondaystart);
+        const mone =  dayjsToString(values.mondayend);
+        const mond = [mons, mone]
+
+        if(!worker?._id) {
                 await createWorker( {
                     orgId: worker.orgId, 
                     firstname: values.firstname,
                     lastname: values.lastname,
-                    mondaystart: values.mondaystart.toDate(),
-                    mondayend:  values.mondayend.toDate(),
+                    mondaystart: dayjsToString(values.mondaystart),
+                    mondayend:  dayjsToString(values.mondayend),
+                    monday: [dayjsToString(values.mondaystart) , dayjsToString(values.mondayend)],
                     path: pathname,
                 });
         } else {
@@ -76,8 +83,9 @@ function CreateWorker({ worker } : Props) {
                 orgId: values.orgId,
                 firstname: values.firstname,
                 lastname: values.lastname,
-                mondaystart: values.mondaystart.toDate(),
-                mondayend:  values.mondayend.toDate(),
+                mondaystart: dayjsToString(values.mondaystart),
+                mondayend:  dayjsToString(values.mondayend),
+                monday: [dayjsToString(values.mondaystart) , dayjsToString(values.mondayend)],
                 path: pathname,
 
             });

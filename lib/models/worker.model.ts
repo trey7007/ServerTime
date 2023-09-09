@@ -11,6 +11,10 @@ const workerSchema = new mongoose.Schema({
     mondaystart: { type: String, default: null },
 
     mondayend: { type: String, default: null},
+
+    monday: [
+        {type: String}
+    ]
 });
 
 const Worker = mongoose.models.Worker|| mongoose.model('Worker', workerSchema);

@@ -1,7 +1,19 @@
 import { type ClassValue, clsx } from "clsx"
+import dayjs, { Dayjs } from "dayjs";
 import { twMerge } from "tailwind-merge"
-import Worker from "./models/worker.model";
  
+
+export function dayjsToString(dayjsdate: Dayjs){
+  const hours = dayjsdate.hour()
+  const minutes = dayjsdate.minute()
+  return `${hours}:${minutes.toString().padStart(2, '0')}`;
+}
+
+export function TimeToDayjs(timestring: string){
+
+  const res = "2000-01-01T" + timestring
+  return dayjs(res)
+}
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }

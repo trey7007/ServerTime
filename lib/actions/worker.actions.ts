@@ -13,12 +13,13 @@ interface Params {
   orgId: string,
   firstname: string,
   lastname: string,
-  mondaystart: Dayjs | null,
-  mondayend:  Dayjs | null,
+  mondaystart: String | null,
+  mondayend:  String| null,
+  monday: string[]
   path: string,
 }
 
-export async function createWorker({ orgId, firstname, lastname, mondaystart, mondayend, path }: Params
+export async function createWorker({ orgId, firstname, lastname, mondaystart, mondayend, monday, path }: Params
   ) {
     try {
       connectToDB();
@@ -29,6 +30,7 @@ export async function createWorker({ orgId, firstname, lastname, mondaystart, mo
         lastname,
         mondaystart,
         mondayend,
+        monday
       });
 
       revalidatePath(path);
@@ -39,7 +41,7 @@ export async function createWorker({ orgId, firstname, lastname, mondaystart, mo
   }
 
 
-export async function updateWorker( { id, firstname, lastname, mondaystart, mondayend, path }: Params) {
+export async function updateWorker( { id, firstname, lastname, mondaystart, mondayend, monday, path }: Params) {
   
   connectToDB();
 
@@ -50,6 +52,7 @@ export async function updateWorker( { id, firstname, lastname, mondaystart, mond
       lastname,
       mondaystart,
       mondayend,
+      monday
     })
 
     revalidatePath(path);
@@ -61,8 +64,6 @@ export async function updateWorker( { id, firstname, lastname, mondaystart, mond
 
 export async function getAllWorkers() {
     
-    
-
     try {
       
       connectToDB();
@@ -75,6 +76,22 @@ export async function getAllWorkers() {
     }
   }
 
+export async function findWorkerByDay(orgId: string) {
+
+  try {
+      
+    connectToDB();
+
+    const workers = await Worker.find({ organizationId: orgId }).lean();
+
+    return workers;
+
+  } catch (error: any) {
+
+    throw new Error('Error fetching workers: ' + error.message);
+
+  }
+}
 export async function getWorker(id: string) {
 
   connectToDB();
