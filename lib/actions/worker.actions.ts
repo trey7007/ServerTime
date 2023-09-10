@@ -1,11 +1,6 @@
-
-  "use server";
-
+"use server";
 import { revalidatePath } from "next/cache";
 import Worker from "../models/worker.model";
-
-import { Dayjs } from 'dayjs';
-
 import { connectToDB } from "../mongoose";
 
 interface Params {
@@ -44,7 +39,8 @@ export async function updateWorker( { id, firstname, lastname, monday, tuesday, 
   connectToDB();
 
   try {
-   
+    
+
     const worker = await Worker.findByIdAndUpdate(id, {
       firstname,
       lastname,
@@ -73,14 +69,19 @@ export async function getAllWorkers() {
     }
   }
 
-export async function findWorkerByDay(orgId: string) {
+export async function getWorkersByDay(orgId: string, dayname: string) {
 
   try {
       
     connectToDB();
 
-    const workers = await Worker.find({ organizationId: orgId }).lean();
+    const query = {
+      orgId,
+      [dayname.toLowerCase()]: { $ne: null, $not: { $size: 0 } }
+    }
 
+    const workers = await Worker.find(query).lean();
+ 
     return workers;
 
   } catch (error: any) {

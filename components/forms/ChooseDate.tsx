@@ -79,9 +79,9 @@ export function ChooseDate() {
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
-                    disabled={(date) =>
-                      date < new Date()
-                    }
+                    // disabled={(date) =>
+                    //   date < new Date()
+                    // }
                     initialFocus
                   />
                 </PopoverContent>
