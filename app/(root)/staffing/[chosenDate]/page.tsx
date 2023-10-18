@@ -3,6 +3,14 @@ import { getUser } from "@/lib/actions/user.actions";
 import {  getWorkersByDay } from "@/lib/actions/worker.actions"
 import { currentUser } from "@clerk/nextjs";
 import dayjs from 'dayjs';
+import {StaffingDay} from "@/components/forms/StaffingDay"
+
+interface worker {
+        key: string;
+        _id: string;
+        firstname: string;
+        lastname: string;
+  }
 
 export default async function Page({ params }: { params: { chosenDate: string } }) {
 
@@ -22,24 +30,37 @@ export default async function Page({ params }: { params: { chosenDate: string } 
     
     const result = await getWorkersByDay(userInfo.orgId, dayOfWeek)
 
+    const availworkers: worker[] = result.map(item => ({ 
+            key: String(item._id),
+            _id: String(item._id),
+            firstname: String(item.firstname),
+            lastname: String(item.lastname)    
+    }));
+  
 
     return(
+        
         <>
-        <div className="text-white text-center font-semibold">
+        
+        <div className="text-white text-center text-heading2-bold font-semibold">
             
             {formattedDate}
 
         </div>
-        <section className="flex flex-row p-4 ">
-            <div className="w-8/12 text-white">
-                Making the Schedule
+        <section className="flex flex-row py-8 ">
+            
+            <div className="w-8/12 text-heading3-bold text-white">
+                
+                <StaffingDay availworkers={availworkers} date={params.chosenDate} orgId={userInfo.orgId} />
             </div>
-            <div className="w-4/12 text-white">
+            
+            <div className="w-4/12 text-heading3-bold text-white">
                 
                 
                 Workers
+         
 
-                <div className="flex flex-col space-y-6 ">
+                <div className="flex flex-col text-base-regular space-y-6 py-6 ">
                     {result.map((worker) => (          
                     <WorkerCard
                         key={String(worker._id)}

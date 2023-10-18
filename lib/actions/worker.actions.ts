@@ -1,7 +1,10 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import Worker from "../models/worker.model";
+import Schedule from "../models/schedule.model";
 import { connectToDB } from "../mongoose";
+import { getUser } from "./user.actions";
+import { currentUser } from "@clerk/nextjs";
 
 interface Params {
   id?: string,
@@ -118,7 +121,7 @@ export async function deleteWorker(id: string, path: string) {
       throw new Error("Worker not found");
     }
    
-    // TODO: Delete the worker from the org they are part of
+    // TODO: Delete the worker from the org they are part of and their schedule
     
     revalidatePath(path);
 
@@ -126,6 +129,4 @@ export async function deleteWorker(id: string, path: string) {
     throw new Error(`Failed to delete worker: ${error.message}`);
   }
 }
-
-  
 

@@ -6,6 +6,7 @@ import Topbar from '@/components/shared/Topbar'
 import Leftsidebar from '@/components/shared/Leftsidebar'
 import Bottombar from '@/components/shared/Bottombar'
 const inter = Inter({ subsets: ['latin'] })
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
   title: 'Server Time',
@@ -34,6 +35,7 @@ export default function RootLayout({
                 </div>
               </section>
           </main>
+          <Toaster />
           <Bottombar />
         </body>
       </html>
