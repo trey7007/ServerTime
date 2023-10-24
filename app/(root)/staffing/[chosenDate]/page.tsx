@@ -4,12 +4,14 @@ import {  getWorkersByDay } from "@/lib/actions/worker.actions"
 import { currentUser } from "@clerk/nextjs";
 import dayjs from 'dayjs';
 import {StaffingDay} from "@/components/forms/StaffingDay"
+import { getSched } from "@/lib/actions/schedule.actions";
 
 interface worker {
         key: string;
         _id: string;
         firstname: string;
         lastname: string;
+        start: string;
   }
 
 export default async function Page({ params }: { params: { chosenDate: string } }) {
@@ -34,44 +36,27 @@ export default async function Page({ params }: { params: { chosenDate: string } 
             key: String(item._id),
             _id: String(item._id),
             firstname: String(item.firstname),
-            lastname: String(item.lastname)    
+            lastname: String(item.lastname),
+            start: String(item.start)    
     }));
   
 
-    return(
-        
+    const defVal = await getSched(params.chosenDate, userInfo.orgId);
+
+    return( 
         <>
-        
         <div className="text-white text-center text-heading2-bold font-semibold">
             
             {formattedDate}
 
         </div>
-        <section className="flex flex-row py-8 ">
-            
-            <div className="w-8/12 text-heading3-bold text-white">
-                
-                <StaffingDay availworkers={availworkers} date={params.chosenDate} orgId={userInfo.orgId} />
-            </div>
-            
-            <div className="w-4/12 text-heading3-bold text-white">
-                
-                
-                Workers
-         
+        <section className="flex flex-row py-8 "> 
+            <div className="text-heading3-bold text-white">
 
-                <div className="flex flex-col text-base-regular space-y-6 py-6 ">
-                    {result.map((worker) => (          
-                    <WorkerCard
-                        key={String(worker._id)}
-                        id = {String(worker._id)}
-                        firstname = {worker.firstname}
-                        lastname = {worker.lastname}
-                    />
-                    ))}
-                </div>
-
-            </div>
+                Morning Shift
+                <StaffingDay availworkers={availworkers} date={params.chosenDate} orgId={userInfo.orgId} defVal={defVal}/>
+            
+            </div> 
         </section>
         </>
     )

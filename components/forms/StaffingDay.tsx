@@ -15,19 +15,25 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { toast } from "@/components/ui/use-toast"
-import { addWorkerShift, clearShift } from "@/lib/actions/schedule.actions"
+import { addWorkerShift, clearShift, getSched } from "@/lib/actions/schedule.actions"
+import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import dayjs from "dayjs"
+
 
 interface worker {
   key: string;
   _id: string;
   firstname: string;
   lastname: string;
+  start: string;
 }
 
 interface Props { 
   availworkers: worker[], 
   date: string,
-  orgId: string
+  orgId: string,
+  defVal: any,
 }
 
 const FormSchema = z.object({
@@ -38,34 +44,34 @@ const FormSchema = z.object({
   }),
 })
 
-export function StaffingDay( {availworkers, date, orgId}  : Props) {
 
-
+export function StaffingDay( {availworkers, date, orgId, defVal}  : Props) {
   
 
-  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      availworkers: [availworkers[0]._id]
+      availworkers: defVal
       }
     })
   
 
-
   function onSubmit(data: any) {
     toast({
-      title: "Updated the schedule",
+      title: "Add the times",
     })
+
+  
 
     clearShift(date , orgId);
 
-    data.availworkers.map((worker: string) => addWorkerShift(worker, date, orgId, "11:00", "5:00"))
+    data.availworkers.map((worker: string) => addWorkerShift(worker, date, orgId, "11:00", "5:00"));
 
    
   }
 
   return (
+    <LocalizationProvider  dateAdapter={AdapterDayjs}>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
@@ -74,7 +80,7 @@ export function StaffingDay( {availworkers, date, orgId}  : Props) {
           render={() => (
             <FormItem>
               <div className="mb-4">
-                <FormLabel className="text-base">Morning Shift</FormLabel>
+                <FormLabel className="text-base"></FormLabel>
                 <FormDescription>
                  
                 </FormDescription>
@@ -107,10 +113,16 @@ export function StaffingDay( {availworkers, date, orgId}  : Props) {
                         <FormLabel className="text-sm font-normal">
                           {item.firstname} {item.lastname}
                         </FormLabel>
+
+
+
                       </FormItem>
+                      
                     )
                   }}
                 />
+                
+                
               ))}
               <FormMessage />
             </FormItem>
@@ -119,5 +131,6 @@ export function StaffingDay( {availworkers, date, orgId}  : Props) {
         <Button type="submit">Submit</Button>
       </form>
     </Form>
+    </LocalizationProvider>
   )
 }

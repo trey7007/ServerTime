@@ -16,8 +16,7 @@ interface Params {
   path: string,
 }
 
-export async function createWorker({ orgId, firstname, lastname,  monday, tuesday, path }: Params
-  ) {
+export async function createWorker({ orgId, firstname, lastname,  monday, tuesday, path }: Params ) {
     try {
       connectToDB();
 

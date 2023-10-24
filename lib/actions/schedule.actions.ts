@@ -6,6 +6,34 @@ import { connectToDB } from "../mongoose";
 import { getUser } from "./user.actions";
 import { currentUser } from "@clerk/nextjs";
 
+interface Schedule {
+    workerId: string;
+}
+
+export async function getSched(date: string, orgId: string) {
+
+    try {
+      connectToDB();
+  
+  
+      // Check if a schedule with the same orgId and date exists
+        const Sched = await Schedule.findOne({ orgId, date });
+        
+        const res = []
+        if (Sched){
+            for (let i = 0; i < Sched.shifts.length; i++){
+                const entry = Sched.shifts[i]
+                res.push(entry.workerId);
+            }
+        }
+        return res;
+     
+  
+    } catch (error: any)  {
+      throw new Error(`Failed to get Schedule: ${error.message}`);
+    }
+  }
+
 export async function addWorkerShift(workerId: string, date: string, orgId: string, start: string, end: string) {
 
     try {
@@ -56,7 +84,7 @@ export async function clearShift(date: string, orgId: string){
       // Check if a schedule with the same orgId and date exists
         const existingSchedule = await Schedule.findOne({ orgId, date });
         
-        await Schedule.findByIdAndDelete(existingSchedule._id);
+        if (existingSchedule) {await Schedule.findByIdAndDelete(existingSchedule._id)};
 
 
     } catch (error: any)  {
