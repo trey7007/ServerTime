@@ -1,8 +1,5 @@
-import { CalendarCard } from '@/components/cards/Schedule';
-import WorkerCard from '@/components/cards/WorkerCard';
 import { ChooseDate } from '@/components/forms/ChooseDate';
 import { currentUser } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
 
 async function Page() {
 

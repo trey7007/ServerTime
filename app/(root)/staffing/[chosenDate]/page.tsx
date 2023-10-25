@@ -1,4 +1,3 @@
-import WorkerCard from "@/components/cards/WorkerCard"
 import { getUser } from "@/lib/actions/user.actions";
 import {  getWorkersByDay } from "@/lib/actions/worker.actions"
 import { currentUser } from "@clerk/nextjs";

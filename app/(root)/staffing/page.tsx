@@ -9,6 +9,9 @@ async function Page() {
     return (
         <>     
         <h1 className= "head-text">Staffing</h1>
+        <div className= "text-heading3 text-white">
+            Place a component here that shows each day
+        </div>
         </>
     )
 }
