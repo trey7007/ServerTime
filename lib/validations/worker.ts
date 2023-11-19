@@ -9,5 +9,15 @@ export const WorkerValidation = z.object({
     mondayend: z.any(),
     tuesdaystart: z.any(),
     tuesdayend: z.any(),
+    wednesdaystart: z.any(),
+    wednesdayend: z.any(),
+    thursdaystart: z.any(),
+    thursdayend: z.any(),
+    fridaystart: z.any(),
+    fridayend: z.any(),
+    saturdaystart: z.any(),
+    saturdayend: z.any(),
+    sundaystart: z.any(),
+    sundayend: z.any(),
 
 })

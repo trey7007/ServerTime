@@ -14,7 +14,27 @@ const workerSchema = new mongoose.Schema({
     
     tuesday: [
         {type: String}
-    ]
+    ],
+
+    wednesday: [
+        {type: String}
+    ],
+
+    thursday: [
+        {type: String}
+    ],
+
+    friday: [
+        {type: String}
+    ],
+
+    saturday: [
+        {type: String}
+    ],
+
+    sunday: [
+        {type: String}
+    ],
 });
 
 const Worker = mongoose.models.Worker|| mongoose.model('Worker', workerSchema);

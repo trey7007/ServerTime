@@ -11,7 +11,7 @@ function Leftsidebar() {
     const pathname = usePathname();
     return (
         <section className="custom-scrollbar leftsidebar">
-            <div className="leftcontainer">
+            <div className="leftcontainer ">
                 
                 {leftbarlinks.map((link) => {
                     

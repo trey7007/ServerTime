@@ -10,7 +10,7 @@ async function Page() {
     return (
         <>     
         <h1 className= "head-text">Scheduling</h1>
-        <ChooseDate/>
+        <ChooseDate page = "scheduling" />
         </>
 
     )

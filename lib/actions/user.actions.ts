@@ -54,3 +54,4 @@ export async function getUser(clerkId: string) {
 
   }
 }
+

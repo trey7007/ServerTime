@@ -1,10 +1,8 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import Worker from "../models/worker.model";
-import Schedule from "../models/schedule.model";
 import { connectToDB } from "../mongoose";
-import { getUser } from "./user.actions";
-import { currentUser } from "@clerk/nextjs";
+
 
 interface Params {
   id?: string,
@@ -13,10 +11,15 @@ interface Params {
   lastname: string,
   monday?: string[],
   tuesday?: string[],
+  wednesday?: string[],
+  thursday?: string[],
+  friday?: string[],
+  saturday?: string[],
+  sunday?: string[],
   path: string,
 }
 
-export async function createWorker({ orgId, firstname, lastname,  monday, tuesday, path }: Params ) {
+export async function createWorker({ orgId, firstname, lastname,  monday, tuesday, wednesday, thursday, friday, saturday, sunday, path }: Params ) {
     try {
       connectToDB();
 
@@ -25,7 +28,12 @@ export async function createWorker({ orgId, firstname, lastname,  monday, tuesda
         firstname,
         lastname,
         monday,
-        tuesday
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday
       });
 
       revalidatePath(path);
@@ -36,7 +44,7 @@ export async function createWorker({ orgId, firstname, lastname,  monday, tuesda
   }
 
 
-export async function updateWorker( { id, firstname, lastname, monday, tuesday, path }: Params) {
+export async function updateWorker( { id, firstname, lastname, monday, tuesday, wednesday, thursday, friday, saturday, sunday, path }: Params) {
   
   connectToDB();
 
@@ -47,7 +55,12 @@ export async function updateWorker( { id, firstname, lastname, monday, tuesday, 
       firstname,
       lastname,
       monday,
-      tuesday
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
+      sunday
     })
 
     revalidatePath(path);

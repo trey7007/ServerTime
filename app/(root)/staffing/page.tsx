@@ -1,17 +1,25 @@
+import { ScheduleCard } from '@/components/cards/ScheduleCard';
+import { ChooseDate } from '@/components/forms/ChooseDate';
+import { fullSched } from '@/lib/actions/schedule.actions';
+import { getUser } from '@/lib/actions/user.actions';
 import { currentUser } from '@clerk/nextjs';
 
 async function Page() {
 
     const user = await currentUser();
-
     if(!user) return null;
+    const userInfo = await getUser(user.id);
+
 
     return (
         <>     
         <h1 className= "head-text">Staffing</h1>
-        <div className= "text-heading3 text-white">
-            Place a component here that shows each day
-        </div>
+
+        <section>
+            <ChooseDate page = "staffing" />
+        </section>
+       
+ 
         </>
     )
 }

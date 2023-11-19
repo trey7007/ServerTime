@@ -25,13 +25,18 @@ import {
 } from "@/components/ui/popover"
 import { redirect, useRouter } from "next/navigation"
 
+interface Props{
+  page: string
+}
+
 const FormSchema = z.object({
   chosenDate: z.date({
     required_error: "A date is required.",
   }),
 })
 
-export function ChooseDate() {
+
+export function ChooseDate( { page } : Props ) {
 
     const router = useRouter();
 
@@ -42,7 +47,7 @@ export function ChooseDate() {
   function onSubmit(values: z.infer<typeof FormSchema>) {
 
     const dateString = format(values.chosenDate, 'yyyy-MM-dd');
-    router.push(`/staffing/${dateString}`)
+    router.push(`/${page}/${dateString}`)
 
   }
 

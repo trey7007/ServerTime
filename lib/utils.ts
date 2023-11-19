@@ -37,8 +37,16 @@ export function formatDateString(dateString: string) {
 }
 
 
-export async function getSequenceNextValue(seqName: string) {
+export async function incrementDateBy1(dateString: string) {
+  
+  const dateObject = new Date(dateString);
 
+  // Increment the date by 1 day
+  dateObject.setDate(dateObject.getDate() + 1);
 
+  // Get the format from the input date
+  const incrementedDateString = dateObject.toISOString().split('T')[0];
+
+  return incrementedDateString;
 
 }

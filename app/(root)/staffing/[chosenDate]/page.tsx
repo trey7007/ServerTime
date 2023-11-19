@@ -1,62 +1,68 @@
-import { getUser } from "@/lib/actions/user.actions";
-import {  getWorkersByDay } from "@/lib/actions/worker.actions"
-import { currentUser } from "@clerk/nextjs";
-import dayjs from 'dayjs';
-import {StaffingDay} from "@/components/forms/StaffingDay"
-import { getSched } from "@/lib/actions/schedule.actions";
+import { ScheduleCard } from '@/components/cards/ScheduleCard';
+import { fullSched } from '@/lib/actions/schedule.actions';
+import { getUser } from '@/lib/actions/user.actions';
+import { incrementDateBy1 } from '@/lib/utils';
+import { currentUser } from '@clerk/nextjs';
 
-interface worker {
-        key: string;
-        _id: string;
-        firstname: string;
-        lastname: string;
-        start: string;
+interface schedCard {
+    id: any;
+    role: string;
+    name: string;
+    start: string;
+    end: string;
   }
+
+interface schedCardInput {
+    day: string,
+    schedule: schedCard[]
+}
+
 
 export default async function Page({ params }: { params: { chosenDate: string } }) {
 
+  
     const user = await currentUser();
     if(!user) return null;
     const userInfo = await getUser(user.id);
 
-
-    const curDate = dayjs(params.chosenDate)
-    const formattedDate = curDate.format('dddd, MMMM DD, YYYY');
-
-    // Use a regular expression to extract the day of the week
-    const dayOfWeekMatch = formattedDate.match(/^[A-Za-z]+/);
-    if(!dayOfWeekMatch) return null
-    // Check if a match was found and get the first match (day of the week)
-    const dayOfWeek = dayOfWeekMatch[0]
     
-    const result = await getWorkersByDay(userInfo.orgId, dayOfWeek)
+    const startSched = await fullSched(String(params.chosenDate), userInfo.orgId)
 
-    const availworkers: worker[] = result.map(item => ({ 
-            key: String(item._id),
-            _id: String(item._id),
-            firstname: String(item.firstname),
-            lastname: String(item.lastname),
-            start: String(item.start)    
-    }));
-  
 
-    const defVal = await getSched(params.chosenDate, userInfo.orgId);
+    const dateList1 : schedCardInput[] = [ {
+        day: params.chosenDate, 
+        schedule: startSched
+    }]
+   
+    //amount of extra days you want added
+    for (let i = 0; i < 6; i++){
 
-    return( 
-        <>
-        <div className="text-white text-center text-heading2-bold font-semibold">
+        const tmp = await incrementDateBy1(String(dateList1[i].day))
+        const sched = await fullSched(tmp, userInfo.orgId)
+
+        dateList1.push({
+            day: tmp, 
+            schedule: sched
+        })
+    }
+
+
+
+
+    return (
+        <>     
+        <h1 className= "head-text pb-5">Staffing</h1>
+
+        <section className="flex flex-wrap justify-between">
             
-            {formattedDate}
+            {dateList1.map((input) => (
+                <div className="">
+                    <ScheduleCard day={input.day} sched={input.schedule}/>
+                </div>
+            ))}
 
-        </div>
-        <section className="flex flex-row py-8 "> 
-            <div className="text-heading3-bold text-white">
-
-                Morning Shift
-                <StaffingDay availworkers={availworkers} date={params.chosenDate} orgId={userInfo.orgId} defVal={defVal}/>
-            
-            </div> 
-        </section>
+        </section>        
+ 
         </>
     )
 }
